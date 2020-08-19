@@ -1,0 +1,20 @@
+{
+	"name": "connect4",
+	"version": "1.0.0",
+	"description": "A connect4 bot",
+	"main": "index.js",
+	"scripts": {
+		"tsc": "tsc --watch"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"colors": "^1.4.0",
+		"puppeteer": "^5.2.1",
+		"request": "^2.88.2"
+	},
+	"devDependencies": {
+		"@types/puppeteer": "^3.0.1"
+	}
+}
