@@ -1,6 +1,8 @@
-const Scraper = require('./class/Scraper');
+const SCRAPER = require('./class/Scraper');
+const GAME = require('./class/Game');
 const c = require('colors/safe');
-const scraper = new Scraper();
+const game = new GAME();
+const scraper = new SCRAPER(game);
 async function scrape() {
     await scraper.init();
     let link = await scraper.getlink();
@@ -10,10 +12,11 @@ async function scrape() {
 async function main() {
     await scrape();
     while (!scraper.isFinished) {
-        scraper.readConsole();
+        game.update(scraper.readConsole());
         await scraper.playRandom();
     }
     process.exit();
 }
 //RUN THE MAIN FUNCTION -->
 main();
+//# sourceMappingURL=main.js.map

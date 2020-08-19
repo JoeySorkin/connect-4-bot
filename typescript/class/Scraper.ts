@@ -1,5 +1,13 @@
-import { Page } from 'puppeteer';
 
+type Turn = 'red' | 'blue' | '';
+type GameType = {
+	turn: Turn;
+	state: Array<Array<String>>;
+	isFinished: boolean;
+	update(obj: object): void;
+};
+
+import { Page } from 'puppeteer
 const c = require('colors/safe');
 const puppeteer = require('puppeteer');
 const selectors = {
@@ -12,6 +20,7 @@ const selectors = {
 		turn: '/html/body/app-root/app-game-field/div[1]/div/div/p'
 	}
 };
+
 class Scraper {
 	//Variable Declaration
 	turns: number = 0;
@@ -20,7 +29,12 @@ class Scraper {
 	turn: string = '';
 	page: Page;
 	invitelink: string;
-	constructor() {}
+	shouldreturn: boolean;
+	curobj: object;
+	game: GameType;
+	constructor(game) {
+		this.game = game;
+	}
 	/* PRIVATE FUNCTIONS */
 	/**
 	 * @private
@@ -93,7 +107,9 @@ class Scraper {
 	 *	@public
 	 *  @description If the website has data shown up in its console, this function detects it, parses it, and updates the objects state
 	 */
-	readConsole() {
+	readConsole(): object {
+		this.shouldreturn = false;
+		this.curobj = {};
 		this.page.on('console', msg => {
 			for (let i = 0; i < msg.args().length; ++i) {
 				msg
@@ -101,14 +117,15 @@ class Scraper {
 					[i].jsonValue()
 					.then((obj: any) => {
 						this.isFinished = obj.isFinished;
+
 						if (this.turn != obj.currentPlayer.color) {
 							this.turn = obj.currentPlayer.color;
 
-							console.log(`It is ${this.turn} turn.`);
+							// console.log(`It is ${this.turn} turn.`);
 							this.turns++;
+							this.shouldreturn = true;
 
-							this.boardstate = obj.board;
-							console.table(this.boardstate);
+							this.game.update(obj);
 						}
 					})
 					.catch(err => {

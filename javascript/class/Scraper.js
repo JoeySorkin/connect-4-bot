@@ -10,12 +10,13 @@ const selectors = {
     }
 };
 class Scraper {
-    constructor() {
+    constructor(game) {
         //Variable Declaration
         this.turns = 0;
         this.isFinished = false;
         this.boardstate = [];
         this.turn = '';
+        this.game = game;
     }
     /* PRIVATE FUNCTIONS */
     /**
@@ -82,6 +83,8 @@ class Scraper {
      *  @description If the website has data shown up in its console, this function detects it, parses it, and updates the objects state
      */
     readConsole() {
+        this.shouldreturn = false;
+        this.curobj = {};
         this.page.on('console', msg => {
             for (let i = 0; i < msg.args().length; ++i) {
                 msg
@@ -90,10 +93,10 @@ class Scraper {
                     this.isFinished = obj.isFinished;
                     if (this.turn != obj.currentPlayer.color) {
                         this.turn = obj.currentPlayer.color;
-                        console.log(`It is ${this.turn} turn.`);
+                        // console.log(`It is ${this.turn} turn.`);
                         this.turns++;
-                        this.boardstate = obj.board;
-                        console.table(this.boardstate);
+                        this.shouldreturn = true;
+                        this.game.update(obj);
                     }
                 })
                     .catch(err => {
@@ -104,3 +107,4 @@ class Scraper {
     }
 }
 module.exports = Scraper;
+//# sourceMappingURL=Scraper.js.map
