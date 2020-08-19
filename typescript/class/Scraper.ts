@@ -1,4 +1,3 @@
-
 type Turn = 'red' | 'blue' | '';
 type GameType = {
 	turn: Turn;
@@ -7,7 +6,7 @@ type GameType = {
 	update(obj: object): void;
 };
 
-import { Page } from 'puppeteer
+import { Page } from 'puppeteer';
 const c = require('colors/safe');
 const puppeteer = require('puppeteer');
 const selectors = {
